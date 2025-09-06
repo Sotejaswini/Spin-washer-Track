@@ -22,6 +22,15 @@ Logging to log.txt for all bookings and completions
 
 Easy live preview: Frontend deployable on GitHub Pages; backend deployable with Docker
 
+3) Rebuild
+g++ src/main.cpp src/Scheduler.cpp src/WashingMachine.cpp src/User.cpp \
+   -I src -I third_party -o WashingMachineSystem -std=c++11 -pthread
+
+./WashingMachineSystem
+
+
+You should now get the prompt: Enter number of washing machines:
+
 Core OS/Concurrency Concepts: threads, mutexes, condition variables, resource allocation, FIFO queues, timer management, HTTP/REST.
 # 💼 Resume Bullets 
 

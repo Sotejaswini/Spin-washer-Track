@@ -6,3 +6,5 @@ Real-time concurrent washing machine booking system with priority scheduling, co
 - Implemented **FIFO scheduling** with a thread-safe queue and real-time **resource allocation** across machines.
 - Designed a **REST API** (cpp-httplib) exposing **/book**, **/status**, **/logs**, **/health**, enabling remote bookings and monitoring.
 - Developed a **web UI** with live machine cards, countdown timers, **wing-based filtering**, and **completion alerts** (sound + notifications).
+- Get third_party/httplib.h from https://github.com/yhirose/cpp-httplib
+ (single header).

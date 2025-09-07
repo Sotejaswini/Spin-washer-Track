@@ -1,4 +1,5 @@
 # Spin-washer-Track
+Spin-washer-Track 🌀 | A real-time concurrent washing machine booking system with FIFO scheduling, countdown timers, and REST API integration. Built in C++ (threads, mutexes, condition variables) with a REST + Web UI frontend.
 Real-time concurrent washing machine booking system with priority scheduling, countdown timers, and REST API integration.
 Concurrent Washing Machine Scheduler (FIFO) — C++ + REST + Web UI
 

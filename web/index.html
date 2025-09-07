@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Washer Scheduler — FIFO UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Concurrent Washing Machine Scheduler (FIFO)</h1>
+      <div class="health" id="healthBadge">Checking API...</div>
+    </header>
+
+    <section class="panel">
+      <h2>New Booking</h2>
+      <form id="bookForm">
+        <div class="row">
+          <label>Name</label
+          ><input id="name" type="text" required placeholder="Alice" />
+        </div>
+        <div class="row">
+          <label>Wing</label
+          ><input id="wing" type="text" required placeholder="A1" />
+        </div>
+        <div class="row">
+          <label>Duration (sec)</label
+          ><input
+            id="duration"
+            type="number"
+            min="1"
+            step="1"
+            required
+            value="5"
+          />
+        </div>
+        <button type="submit">Book</button>
+      </form>
+      <div id="bookMsg" class="msg"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Filter by Wing</h2>
+      <div class="row">
+        <input
+          id="filterWing"
+          type="text"
+          placeholder="e.g., A1 (leave blank = all)"
+        />
+        <button id="applyFilter">Apply</button>
+        <button id="clearFilter" class="ghost">Clear</button>
+      </div>
+    </section>
+
+    <main class="grid">
+      <section>
+        <h2>Machines</h2>
+        <div id="machines" class="cards"></div>
+      </section>
+      <section>
+        <h2>Waiting Queue</h2>
+        <div id="queue" class="list"></div>
+      </section>
+    </main>
+
+    <audio id="doneSound" src="ding.mp3" preload="auto"></audio>
+
+    <footer>
+      <button id="refreshNow" class="ghost">Refresh Now</button>
+      <button id="tailLogs" class="ghost">Show Last 50 Logs</button>
+      <pre id="logs" class="logs" hidden></pre>
+    </footer>
+
+    <script src="env-config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

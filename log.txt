@@ -1,0 +1,30 @@
+[2025-09-07 16:08:14] System started with 2 machines.
+[2025-09-07 16:09:04] Booked IMMEDIATE: Alice [B] on Machine #0
+[2025-09-07 16:09:04] Machine #0 START for Alice (5s)
+[2025-09-07 16:09:09] Machine #0 COMPLETE for Alice
+[2025-09-07 16:09:30] Machine #0 START for Bob (5s)
+[2025-09-07 16:20:33] System started with 2 machines.
+[2025-09-07 16:21:42] Booked IMMEDIATE: Alice [B] on Machine #0
+[2025-09-07 16:21:42] Machine #0 START for Alice (5s)
+[2025-09-07 16:21:47] Machine #0 COMPLETE for Alice
+[2025-09-07 16:23:32] Machine #0 START for Alice (5s)
+[2025-09-07 16:23:46] System started with 4 machines.
+[2025-09-07 16:23:56] Booked IMMEDIATE: Alice [B] on Machine #0
+[2025-09-07 16:23:56] Machine #0 START for Alice (5s)
+[2025-09-07 16:24:01] Machine #0 COMPLETE for Alice
+[2025-09-07 16:24:39] System started with 3 machines.
+[2025-09-07 16:24:52] Booked IMMEDIATE: Alice [B] on Machine #0
+[2025-09-07 16:24:52] Machine #0 START for Alice (5s)
+[2025-09-07 16:24:57] Machine #0 COMPLETE for Alice
+[2025-09-07 16:25:10] Machine #0 START for Bob (4s)
+[2025-09-07 16:25:38] System started with 2 machines.
+[2025-09-07 16:25:44] Booked IMMEDIATE: Alice [B] on Machine #0
+[2025-09-07 16:25:44] Machine #0 START for Alice (5s)
+[2025-09-07 16:25:49] Machine #0 COMPLETE for Alice
+[2025-09-07 16:28:02] Machine #0 START for Alice (5s)
+[2025-09-07 16:28:03] Machine #0 START for Alice (5s)
+[2025-09-07 16:28:09] System started with 2 machines.
+[2025-09-07 16:28:12] Booked IMMEDIATE: Alice [A] on Machine #0
+[2025-09-07 16:28:12] Machine #0 START for Alice (5s)
+[2025-09-07 16:28:17] Machine #0 COMPLETE for Alice
+[2025-09-07 16:28:27] Machine #0 START for Premium (10s)

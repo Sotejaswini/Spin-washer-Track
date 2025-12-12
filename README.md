@@ -4,7 +4,7 @@ A **real-time concurrent washing machine booking system** built in **C++11**, si
 
 📺 Demo: [Watch here](https://drive.google.com/file/d/14XUmhXVbyr1VlH6rPqpAs5nliOaG83yK/view)
 ![Screenshot](https://github.com/Sotejaswini/Spin-washer-Track/blob/main/output/cmd.png)
-
+![Screenshot](https://github.com/Sotejaswini/Spin-washer-Track/blob/main/output/booking.png)
 
 ---
 

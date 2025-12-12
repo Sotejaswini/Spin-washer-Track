@@ -3,6 +3,8 @@
 A **real-time concurrent washing machine booking system** built in **C++11**, simulating hostel/apartment laundry management with concurrency, scheduling, and REST APIs.  
 
 📺 Demo: [Watch here](https://drive.google.com/file/d/14XUmhXVbyr1VlH6rPqpAs5nliOaG83yK/view)
+![Screenshot](https://github.com/Sotejaswini/Spin-washer-Track/blob/main/output/cmd.png)
+
 
 ---
 

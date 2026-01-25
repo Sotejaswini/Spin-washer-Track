@@ -153,12 +153,34 @@ static void consoleLoop(Scheduler& sched) {
 int main(int argc, char** argv) {
     Args args = parse_args(argc, argv);
 
-    int machines = args.machines;
+    /*int machines = args.machines;
     if (!args.headless) {
         std::cout << "Enter number of washing machines: ";
         if (!(std::cin >> machines)) return 0;
     }
+    if (machines < 1) machines = 1;*/
+    int machines = args.machines;
+
+// 1️⃣ ENV VAR (cloud-friendly)
+if (machines < 1) {
+    if (const char* env = std::getenv("MACHINE_COUNT")) {
+        try { machines = std::stoi(env); }
+        catch (...) {}
+    }
+}
+
+// 2️⃣ Interactive input (local only)
+if (machines < 1 && !args.headless) {
+    std::cout << "Enter number of washing machines: ";
+    if (!(std::cin >> machines)) {
+        std::cerr << "Invalid input. Using default = 1\n";
+        machines = 1;
+    }
+}
+
+// 3️⃣ Final safety
     if (machines < 1) machines = 1;
+
 
     Scheduler sched(machines);
     Utils::Logger::instance().log("System started with " + std::to_string(machines) + " machines.");

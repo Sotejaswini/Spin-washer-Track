@@ -1,4 +1,6 @@
-const API = window.__API_BASE__ || "http://localhost:8080";
+// web/app.js
+// Use same-origin API (works on Render + locally)
+const API = "";
 
 const el = (id) => document.getElementById(id);
 const bookForm = el("bookForm");
@@ -13,50 +15,68 @@ const logsPre = el("logs");
 let filterWing = "";
 let lastStatus = { machines: [], queue: [] };
 
+/* -------------------- Health Check -------------------- */
 async function pingHealth() {
   try {
     const r = await fetch(`${API}/health`);
-    healthBadge.textContent = r.ok ? "API: healthy" : "API: unreachable";
-    healthBadge.style.color = r.ok ? "#10b981" : "#ef4444";
+    if (r.ok) {
+      healthBadge.textContent = "API: healthy";
+      healthBadge.style.color = "#10b981";
+    } else {
+      throw new Error();
+    }
   } catch {
     healthBadge.textContent = "API: unreachable";
     healthBadge.style.color = "#ef4444";
   }
 }
+
 pingHealth();
 
+/* -------------------- Booking -------------------- */
 bookForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const name = el("name").value.trim();
   const wing = el("wing").value.trim();
   const duration = Number(el("duration").value);
+
   if (!name || !wing || !duration) {
     bookMsg.textContent = "Please fill all fields.";
     return;
   }
+
   try {
-    const url = new URL(`${API}/book`);
+    const url = new URL(`${API}/book`, window.location.origin);
     url.searchParams.set("name", name);
     url.searchParams.set("wing", wing);
     url.searchParams.set("duration", String(duration));
+
     const r = await fetch(url, { method: "POST" });
     const txt = await r.text();
-    bookMsg.textContent = r.ok ? "✅ Booking accepted." : `❌ ${txt}`;
+
+    bookMsg.textContent = r.ok
+      ? "✅ Booking accepted."
+      : `❌ ${txt}`;
   } catch {
     bookMsg.textContent = "❌ Failed to reach API.";
   }
 });
 
+/* -------------------- Filters & Buttons -------------------- */
 el("applyFilter").addEventListener("click", () => {
   filterWing = filterWingInput.value.trim().toLowerCase();
   render();
 });
+
 el("clearFilter").addEventListener("click", () => {
   filterWing = "";
   filterWingInput.value = "";
   render();
 });
+
 el("refreshNow").addEventListener("click", refresh);
+
 el("tailLogs").addEventListener("click", async () => {
   try {
     const r = await fetch(`${API}/logs?n=50`);
@@ -69,13 +89,15 @@ el("tailLogs").addEventListener("click", async () => {
   }
 });
 
+/* -------------------- Helpers -------------------- */
 function formatSecs(s) {
   const sec = Math.max(0, Number(s) | 0);
-  const m = Math.floor(sec / 60),
-    r = sec % 60;
+  const m = Math.floor(sec / 60);
+  const r = sec % 60;
   return m > 0 ? `${m}m ${r}s` : `${r}s`;
 }
 
+/* -------------------- Render UI -------------------- */
 function render() {
   machines.innerHTML = "";
   queue.innerHTML = "";
@@ -83,15 +105,18 @@ function render() {
   lastStatus.machines.forEach((m) => {
     const card = document.createElement("div");
     card.className = "card";
+
     const badge = m.busy
       ? `<span class="badge busy">BUSY</span>`
       : `<span class="badge free">FREE</span>`;
+
     card.innerHTML = `
       <h3>Machine #${m.id} ${badge}</h3>
       <div class="kv"><span>User</span><span>${m.user || "-"}</span></div>
       <div class="kv"><span>Wing</span><span>${m.wing || "-"}</span></div>
       <div class="timer">${formatSecs(m.remaining)}</div>
     `;
+
     machines.appendChild(card);
   });
 
@@ -100,46 +125,57 @@ function render() {
     .sort((a, b) => a.seq - b.seq);
 
   if (q.length === 0) {
-    queue.innerHTML = `<div class="small">No waiting users${
-      filterWing ? ` in wing "${filterWing}"` : ""
-    }.</div>`;
+    queue.innerHTML = `<div class="small">
+      No waiting users${filterWing ? ` in wing "${filterWing}"` : ""}.
+    </div>`;
   } else {
     q.forEach((qi) => {
       const div = document.createElement("div");
       div.className = "rowItem";
-      div.innerHTML = `<div><strong>${qi.name}</strong></div>
-      <div class="small">Wing: ${qi.wing} • Duration: ${qi.duration}s • Seq: ${qi.seq}</div>`;
+      div.innerHTML = `
+        <div><strong>${qi.name}</strong></div>
+        <div class="small">
+          Wing: ${qi.wing} • Duration: ${qi.duration}s • Seq: ${qi.seq}
+        </div>
+      `;
       queue.appendChild(div);
     });
   }
 }
 
+/* -------------------- Completion Detection -------------------- */
 function detectDone(prev, curr) {
   const prevById = {};
   prev.machines.forEach((m) => (prevById[m.id] = m));
+
   curr.machines.forEach((m) => {
     const p = prevById[m.id];
     if (p && p.busy && !m.busy) {
-      const msg = `Machine #${m.id}: Done! ${
-        p.user ? p.user + "," : ""
-      } please put in clothes.`;
+      const msg = `Machine #${m.id}: Done! ${p.user ? p.user + "," : ""} please remove clothes.`;
+
       try {
         doneSound.currentTime = 0;
         doneSound.play().catch(() => {});
       } catch {}
+
       alert(msg);
+
       if ("Notification" in window) {
-        if (Notification.permission === "granted")
+        if (Notification.permission === "granted") {
           new Notification("Washer Done", { body: msg });
-        else if (Notification.permission !== "denied")
+        } else if (Notification.permission !== "denied") {
           Notification.requestPermission().then((v) => {
-            if (v === "granted") new Notification("Washer Done", { body: msg });
+            if (v === "granted") {
+              new Notification("Washer Done", { body: msg });
+            }
           });
+        }
       }
     }
   });
 }
 
+/* -------------------- Poll Status -------------------- */
 async function refresh() {
   try {
     const r = await fetch(`${API}/status`);
@@ -147,10 +183,12 @@ async function refresh() {
     detectDone(lastStatus, data);
     lastStatus = data;
     render();
+    pingHealth();
   } catch {
     healthBadge.textContent = "API: unreachable";
     healthBadge.style.color = "#ef4444";
   }
 }
+
 setInterval(refresh, 1000);
 refresh();
